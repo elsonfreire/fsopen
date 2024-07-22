@@ -15,14 +15,15 @@ const Part = ({ part }) => {
 };
 
 const Content = ({ course }) => {
-  let total = 0;
-
   const createParts = () => {
     return course.parts.map((part) => {
-      total += part.exercises;
       return <Part key={part.id} part={part} />;
     });
   };
+
+  let total = course.parts.reduce((s, p) => {
+    return s + p.exercises;
+  }, 0);
 
   return (
     <>
