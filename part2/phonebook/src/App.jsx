@@ -1,9 +1,6 @@
 import { useState } from "react";
 
-const App = () => {
-  const [persons, setPersons] = useState([
-    { name: "Arto Hellas", number: "040-1234567" },
-  ]);
+const AddForm = ({ persons, setPersons }) => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
 
@@ -32,17 +29,9 @@ const App = () => {
     setNewNumber("");
   };
 
-  const showPersons = () => {
-    return persons.map((person) => (
-      <p key={person.name}>
-        {person.name} {person.number}
-      </p>
-    ));
-  };
-
   return (
-    <div>
-      <h2>Phonebook</h2>
+    <>
+      <h2>add a new</h2>
       <form>
         <div>
           name: <input value={newName} onChange={handleNameChange} />
@@ -56,8 +45,64 @@ const App = () => {
           </button>
         </div>
       </form>
+    </>
+  );
+};
+
+const Numbers = ({ persons }) => {
+  const showPersons = () => {
+    return persons.map((person) => (
+      <p key={person.name}>
+        {person.name} {person.number}
+      </p>
+    ));
+  };
+
+  return (
+    <>
       <h2>Numbers</h2>
-      {showPersons()}
+      <div>{showPersons()}</div>
+    </>
+  );
+};
+
+const App = () => {
+  const [persons, setPersons] = useState([
+    { name: "Arto Hellas", number: "040-123456", id: 1 },
+    { name: "Ada Lovelace", number: "39-44-5323523", id: 2 },
+    { name: "Dan Abramov", number: "12-43-234345", id: 3 },
+    { name: "Mary Poppendieck", number: "39-23-6423122", id: 4 },
+  ]);
+
+  const [filter, setFilter] = useState("");
+  const [filteredPersons, setFilteredPersons] = useState(persons);
+
+  const showPersons = () => {
+    return persons.map((person) => (
+      <p key={person.name}>
+        {person.name} {person.number}
+      </p>
+    ));
+  };
+
+  const handleFilterChange = (event) => {
+    setFilter(event.target.value);
+    setFilteredPersons(
+      persons.filter((person) => {
+        return person.name
+          .toLowerCase()
+          .includes(event.target.value.toLowerCase());
+      })
+    );
+  };
+
+  return (
+    <div>
+      <h2>Phonebook</h2>
+      filter shown with
+      <input value={filter} onChange={handleFilterChange} />
+      <AddForm persons={persons} setPersons={setPersons} />
+      <Numbers persons={filteredPersons} />
     </div>
   );
 };
