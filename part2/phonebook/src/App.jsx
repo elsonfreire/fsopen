@@ -34,12 +34,18 @@ const PersonForm = ({
   );
 };
 
+const Person = ({ person }) => {
+  return (
+    <p>
+      {person.name} {person.number}
+    </p>
+  );
+};
+
 const Persons = ({ persons }) => {
   const showPersons = () => {
     return persons.map((person) => (
-      <p key={person.name}>
-        {person.name} {person.number}
-      </p>
+      <Person key={person.name} person={person} />
     ));
   };
 
@@ -63,14 +69,6 @@ const App = () => {
 
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
-
-  const showPersons = () => {
-    return persons.map((person) => (
-      <p key={person.name}>
-        {person.name} {person.number}
-      </p>
-    ));
-  };
 
   const handleFilterChange = (event) => {
     setFilter(event.target.value);
