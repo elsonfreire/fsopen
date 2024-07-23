@@ -106,7 +106,6 @@ const App = () => {
     );
     setNewName("");
     setNewNumber("");
-    handleFilterChange();
   };
 
   return (
