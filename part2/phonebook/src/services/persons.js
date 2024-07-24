@@ -16,7 +16,15 @@ const create = (newObject) => {
   });
 };
 
+const erase = (id) => {
+  const request = axios.delete(`http://localhost:3001/persons/${id}`);
+  return request.then((response) => {
+    return response.data;
+  });
+};
+
 export default {
   getAll,
   create,
+  erase,
 };

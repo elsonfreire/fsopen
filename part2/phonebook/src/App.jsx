@@ -54,6 +54,9 @@ const Persons = ({ persons, handleDeletePerson }) => {
         key={person.id}
         person={person}
         handleDeletePerson={() => {
+          if (!window.confirm(`Delete ${person.name}?`)) {
+            return;
+          }
           handleDeletePerson(person.id);
         }}
       />
@@ -123,12 +126,10 @@ const App = () => {
   };
 
   const handleDeletePerson = (id) => {
-    console.log(`${id} should be deleted`);
-
-    axios.delete(`http://localhost:3001/persons/${id}`).then((response) => {
+    personService.erase(id).then((returnedPerson) => {
       setPersons(
         persons.filter((person) => {
-          return response.data.id !== person.id;
+          return returnedPerson.id !== person.id;
         })
       );
     });
