@@ -36,18 +36,27 @@ const PersonForm = ({
   );
 };
 
-const Person = ({ person }) => {
+const Person = ({ person, handleDeletePerson }) => {
   return (
-    <p>
-      {person.name} {person.number}
-    </p>
+    <>
+      <div>
+        {person.name} {person.number}
+        <button onClick={handleDeletePerson}>delete</button>
+      </div>
+    </>
   );
 };
 
-const Persons = ({ persons }) => {
+const Persons = ({ persons, handleDeletePerson }) => {
   const showPersons = () => {
     return persons.map((person) => (
-      <Person key={person.name} person={person} />
+      <Person
+        key={person.id}
+        person={person}
+        handleDeletePerson={() => {
+          handleDeletePerson(person.id);
+        }}
+      />
     ));
   };
 
@@ -113,6 +122,18 @@ const App = () => {
     });
   };
 
+  const handleDeletePerson = (id) => {
+    console.log(`${id} should be deleted`);
+
+    axios.delete(`http://localhost:3001/persons/${id}`).then((response) => {
+      setPersons(
+        persons.filter((person) => {
+          return response.data.id !== person.id;
+        })
+      );
+    });
+  };
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -126,7 +147,12 @@ const App = () => {
         handleAddPerson={handleAddPerson}
       />
       <h3>Numbers</h3>
-      <Persons persons={filteredPersons} />
+      <Persons
+        persons={filteredPersons}
+        handleDeletePerson={(id) => {
+          handleDeletePerson(id);
+        }}
+      />
     </div>
   );
 };
